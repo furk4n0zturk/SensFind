@@ -51,12 +51,12 @@ class SensFind:
                     self.product_list.append("PHP")
                     self.product_filelist.append("php.txt")
                 
-                if len(self.product_list) == 0:
-                    print("\nTarget: {}".format(self.target) + "\n[!] Detected Used Products: Not detect! Scanning sensitive files independent of the product\n")
-                    self.productContent()
-                else:
-                    print("\nTarget: {}".format(self.target) + "\n[!] Detected Used Products: " + ', '.join(self.product_list)+"\n")
-                    self.productContent()
+                if "Wordpress" in self.target_req.headers["Server"]:
+                    self.product_list.append("Wordpress")
+                    self.product_filelist.append("php.txt")
+                
+                self.productContent()
+
             
             except requests.exceptions.ConnectionError as err:
                 print("\n[!] Connection Error")
@@ -75,27 +75,40 @@ class SensFind:
     def productContent(self):
 
         if "Tomcat" not in self.product_list:
-            source = BeautifulSoup(self.target_req.content,"lxml")
+            source = str(BeautifulSoup(self.target_req.content,"lxml"))
 
             if "Tomcat" in source:
                 self.product_list.append("Tomcat")
                 self.product_filelist.append("tomcat.txt")
 
         if "PHP" not in self.product_list:
-            source = BeautifulSoup(self.target_req.content,"lxml")
+            source = str(BeautifulSoup(self.target_req.content,"lxml"))
             
             if "PHP" in source:
                 self.product_list.append("PHP")
                 self.product_filelist.append("php.txt")
 
         if "Apache" not in self.product_list:
-            source = BeautifulSoup(self.target_req.content,"lxml")
+            source = str(BeautifulSoup(self.target_req.content,"lxml"))
             
             if "Apache" in source:
                 self.product_list.append("Apache")
                 self.product_filelist.append("apache.txt")
-        self.fuzz()
 
+        if "Wordpress" not in self.product_list:
+            source = str(BeautifulSoup(self.target_req.content,"lxml"))
+
+            if "wordpress" in source:
+                self.product_list.append("Wordpress")
+                self.product_filelist.append("wordpress.txt")
+
+        if len(self.product_list) == 0:
+            print("\nTarget: {}".format(self.target) + "\n[!] Detected Used Products: Not detect! Scanning sensitive files independent of the product\n")
+            self.fuzz()
+        else:
+            print("\nTarget: {}".format(self.target) + "\n[!] Detected Used Products: " + ', '.join(self.product_list)+"\n")
+            self.fuzz()
+            
     def fuzz(self):
         for product_forfile in self.product_filelist:
             self.product_file = product_forfile
@@ -109,6 +122,9 @@ class SensFind:
 
             if self.keyword_list == "tomcat.txt":
                 self.product = "Apache Tomcat"
+
+            if self.keyword_list == "wordpress.txt":
+                self.product = "Wordpress"
 
             if self.keyword_list == "sensitive-path.txt":
                 self.product = "NOT DETECT"
