@@ -28,6 +28,9 @@ git clone https://github.com/furk4n0zturk/SensFind.git
 ```
 cd SensFind
 ```
+```
+pip install -r requirements.txt
+```
 View available parameters
 ```
 $ python sensfind.py -h
