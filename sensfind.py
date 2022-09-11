@@ -122,7 +122,6 @@ class SensFind:
                     full_url = self.target + path
                     req = requests.get(full_url, verify=False, allow_redirects=False, timeout=10)
                     if req.status_code == 404 or req.status_code == 301 or req.status_code == 403:
-                        print("[-] [{}] ".format(self.product) + "[{}] ".format(str(req.status_code)) + full_url)
                         pass
                     else:
                         print("[+] [{}] ".format(self.product) + "[{}] ".format(str(req.status_code)) + full_url)
