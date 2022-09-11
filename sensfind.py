@@ -38,13 +38,17 @@ class SensFind:
             try:
                 self.target_req = requests.get(self.target, verify=False, allow_redirects=False, timeout=10)
 
-                if "Tomcat" in self.target_req.headers["Server"] or "Coyote" in self.target_req.headers["Server"]:         
+                if "tomcat" in self.target_req.headers["Server"] or "Coyote" in self.target_req.headers["Server"]:         
                     self.product_list.append("Apache-Tomcat")
                     self.product_filelist.append("tomcat.txt")
 
                 if "Apache" in self.target_req.headers["Server"]:
                     self.product_list.append("Apache")
                     self.product_filelist.append("apache.txt")
+
+                if "nginx" in self.target_req.headers["Server"]:
+                    self.product_list.append("Nginx")
+                    self.product_filelist.append("nginx.txt")
 
                 if "PHP" in self.target_req.headers["Server"]:
                     self.product_list.append("PHP")
@@ -93,6 +97,13 @@ class SensFind:
                 self.product_list.append("Apache")
                 self.product_filelist.append("apache.txt")
 
+        if "Nginx" not in self.product_list:
+            source = str(BeautifulSoup(self.target_req.content,"lxml"))
+            
+            if "Nginx" in source:
+                self.product_list.append("Nginx")
+                self.product_filelist.append("nginx.txt")
+
         if "Wordpress" not in self.product_list:
             source = str(BeautifulSoup(self.target_req.content,"lxml"))
 
@@ -114,6 +125,9 @@ class SensFind:
 
             if self.keyword_list == "php.txt":
                 self.product = "PHP"
+
+            if self.keyword_list == "nginx.txt":
+                self.product = "NGINX"
                 
             if self.keyword_list == "apache.txt":
                 self.product = "Apache"
