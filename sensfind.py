@@ -6,7 +6,7 @@ from pyfiglet import Figlet
 from bs4 import BeautifulSoup
 
 f = Figlet(font="standard")
-print(f.renderText("SensFind") + "\n" + "Sensitive Web Path Finder v1.0 from @furk4n0zturk  - https://github.com/furk4n0zturk/")
+print(f.renderText("SensFind") + "\n" + "Sensitive Web Path Finder v1.0 by @furk4n0zturk  - https://github.com/furk4n0zturk/")
 
 class SensFind:
     def __init__(self):
