@@ -33,7 +33,6 @@ class SensFind:
         for self.target in self.target_list:
             self.product_filelist = ["sensitive-path.txt"]
             self.product_list = []
-
             if self.target[len(self.target) - 1] != "/":
                 self.target += "/"
             try:
@@ -57,7 +56,6 @@ class SensFind:
                 
                 self.productContent()
 
-            
             except requests.exceptions.ConnectionError as err:
                 print("\n[!] Connection Error")
                 pass
@@ -129,7 +127,7 @@ class SensFind:
             if self.keyword_list == "sensitive-path.txt":
                 self.product = "NOT DETECT"
 
-            self.file = open(self.keyword_list)
+            self.file = open("src/"+self.keyword_list)
             content = self.file.read()
             list = content.splitlines()
 
@@ -152,5 +150,4 @@ class SensFind:
                     print("\n[!] Invalid URL Error")
                     pass
 SensFind()
-
 print("\nOK, Good Luck!")
