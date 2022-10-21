@@ -36,7 +36,8 @@ class SensFind:
             if self.target[len(self.target) - 1] != "/":
                 self.target += "/"
             try:
-                self.target_req = requests.get(self.target, verify=False, allow_redirects=False, timeout=10)
+		headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0','Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8','Accept-Language': 'tr-TR,tr;q=0.8,en-US;q=0.5,en;q=0.3'}
+                self.target_req = requests.get(self.target, headers=headers, verify=False, allow_redirects=False, timeout=10)
 
                 if "tomcat" in self.target_req.headers["Server"] or "Coyote" in self.target_req.headers["Server"]:         
                     self.product_list.append("Apache-Tomcat")
@@ -75,38 +76,39 @@ class SensFind:
                 pass
 
     def productContent(self):
-
+	web_content = self.target_req.content.lower()
+	
         if "Tomcat" not in self.product_list:
-            source = str(BeautifulSoup(self.target_req.content,"lxml"))
+            source = str(BeautifulSoup(web_content,"lxml"))
 
-            if "Tomcat" in source:
+            if "tomcat" in source:
                 self.product_list.append("Tomcat")
                 self.product_filelist.append("tomcat.txt")
 
         if "PHP" not in self.product_list:
-            source = str(BeautifulSoup(self.target_req.content,"lxml"))
+            source = str(BeautifulSoup(web_content,"lxml"))
             
-            if "PHP" in source:
+            if "php" in source:
                 self.product_list.append("PHP")
                 self.product_filelist.append("php.txt")
 
         if "Apache" not in self.product_list:
-            source = str(BeautifulSoup(self.target_req.content,"lxml"))
+            source = str(BeautifulSoup(web_content,"lxml"))
             
-            if "Apache" in source:
+            if "apache" in source:
                 self.product_list.append("Apache")
                 self.product_filelist.append("apache.txt")
 
         if "Nginx" not in self.product_list:
-            source = str(BeautifulSoup(self.target_req.content,"lxml"))
+            source = str(BeautifulSoup(web_content,"lxml"))
             
-            if "Nginx" in source:
+            if "nginx" in source:
                 self.product_list.append("Nginx")
                 self.product_filelist.append("nginx.txt")
 
-        if "Wordpress" not in self.product_list:
-            source = str(BeautifulSoup(self.target_req.content,"lxml"))
-
+        if "WordPress" not in self.product_list:
+            source = str(BeautifulSoup(web_content,"lxml"))
+		
             if "wordpress" in source:
                 self.product_list.append("Wordpress")
                 self.product_filelist.append("wordpress.txt")
@@ -148,7 +150,8 @@ class SensFind:
             for path in list:
                 try:
                     full_url = self.target + path
-                    req = requests.get(full_url, verify=False, allow_redirects=False, timeout=10)
+		    headers2 = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0'}
+                    req = requests.get(full_url,headers=headers2, verify=False, allow_redirects=False, timeout=10)
                     if req.status_code == 404 or req.status_code == 301 or req.status_code == 403:
                         pass
                     else:
