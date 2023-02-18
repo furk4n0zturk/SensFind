@@ -2,11 +2,17 @@ import requests
 requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning)
 import argparse
-from pyfiglet import Figlet
 from bs4 import BeautifulSoup
 
-f = Figlet(font="standard")
-print(f.renderText("SensFind") + "\n" + "Sensitive Web Path Finder v1.0 by @furk4n0zturk  - https://github.com/furk4n0zturk/")
+banner = '''
+ ____                 _____ _           _
+/ ___|  ___ _ __  ___|  ___(_)_ __   __| |
+\___ \ / _ \ '_ \/ __| |_  | | '_ \ / _` |
+ ___) |  __/ | | \__ \  _| | | | | | (_| |
+|____/ \___|_| |_|___/_|   |_|_| |_|\__,_|
+'''
+
+print(banner + "\n" + "Sensitive Web Path Finder v1.0 by @furk4n0zturk  - https://github.com/furk4n0zturk/")
 
 class SensFind:
     def __init__(self):
