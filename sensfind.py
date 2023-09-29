@@ -15,11 +15,15 @@ banner = '''
 print(banner + "\n" + "Sensitive Web Path Finder v1.0 by @furk4n0zturk  - https://github.com/furk4n0zturk/")
 
 class SensFind:
+    user_agent:None
     def __init__(self):
         parser = argparse.ArgumentParser()
         parser.add_argument("--url", "-u", help="Add to Target URL\n")
         parser.add_argument("--urllist", "-uL", help="Add to Target URL List\n")
+        parser.add_argument("--user_agent", "-uA", help="Specify the user agent\n")
         self.args = parser.parse_args()
+        if self.args.user_agent !=None:
+        self.user_agent = self.args.user_agent
         self.target_list = []
         self.getURL()
         self.getProduct()
@@ -42,6 +46,10 @@ class SensFind:
             if self.target[len(self.target) - 1] != "/":
                 self.target += "/"
             try:
+        if user_agent !=None:
+        agent=self.user_agent
+		headers = {'user-agent': agent,'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8','Accept-Language': 'tr-TR,tr;q=0.8,en-US;q=0.5,en;q=0.3'}
+    else:
 		headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0','Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8','Accept-Language': 'tr-TR,tr;q=0.8,en-US;q=0.5,en;q=0.3'}
                 self.target_req = requests.get(self.target, headers=headers, verify=False, allow_redirects=False, timeout=10)
 
@@ -156,7 +164,11 @@ class SensFind:
             for path in list:
                 try:
                     full_url = self.target + path
-		    headers2 = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0'}
+                    if self.user_agent !=None:
+                    agent=self.user_agent
+		            headers2 = {'user-agent': agent}
+                    else:
+                    headers2 = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0'}
                     req = requests.get(full_url,headers=headers2, verify=False, allow_redirects=False, timeout=10)
                     if req.status_code == 404 or req.status_code == 301 or req.status_code == 403:
                         pass
